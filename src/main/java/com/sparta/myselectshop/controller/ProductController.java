@@ -1,6 +1,7 @@
 package com.sparta.myselectshop.controller;
 
 
+import com.sparta.myselectshop.entity.Product;
 import com.sparta.myselectshop.service.ProductService;
 import com.sparta.myselectshop.dto.ProductMypriceRequestDto;
 import com.sparta.myselectshop.dto.ProductRequestDto;
@@ -18,7 +19,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/products")
-    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto){
+    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto) {
         return productService.createProduct(requestDto);
     }
 
