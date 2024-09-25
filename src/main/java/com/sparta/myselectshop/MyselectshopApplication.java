@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableScheduling
-@EnableJpaAuditing //stamped 시 어노테이션 추가
+@EnableScheduling //
+//@EnableJpaAuditing //stamped 시 어노테이션 추가
 @SpringBootApplication
 public class MyselectshopApplication {
 
