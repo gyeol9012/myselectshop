@@ -42,14 +42,18 @@ jobs:
           AWS_REGION: ap-northeast-2  # ECR 리전
           ECR_REPOSITORY: 435944164288.dkr.ecr.ap-northeast-2.amazonaws.com/gathering-21
         run: |
-          # 3.1 GitHub SHA를 이용하여 이미지 태그 생성
+          # GitHub SHA를 사용하여 이미지 태그 생성, 기본값은 latest
           IMAGE_TAG=${GITHUB_SHA::7}
+          if [ -z "$IMAGE_TAG" ]; then IMAGE_TAG="latest"; fi
+          echo "Using IMAGE_TAG: $IMAGE_TAG"
 
-          # 3.2 Docker 이미지를 빌드
+          # Docker 이미지를 빌드
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
-          # 3.3 Docker 이미지를 푸시
+          # Docker 이미지를 푸시
           docker push $ECR_REPOSITORY:$IMAGE_TAG
+          
+          
 
       # 최신 태그로도 푸시하여 최신 버전을 유지합니다.
       - name: Tag and push as 'latest'
