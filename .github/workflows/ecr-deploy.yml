@@ -24,11 +24,10 @@ jobs:
       # AWS CLI를 사용하여 ECR에 로그인합니다.
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          region: ap-northeast-2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ap-northeast-2  # AWS 리전 설정
 
       # Docker 이미지를 빌드하고 ECR에 푸시합니다.
       - name: Build, tag, and push Docker image
