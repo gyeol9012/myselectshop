@@ -26,8 +26,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ap-northeast-2
-
+          aws-region: ap-northeast-2  # 올바른 키 사용
 
       # AWS CLI를 사용하여 ECR에 로그인합니다.
       - name: Log in to Amazon ECR
