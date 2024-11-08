@@ -1,0 +1,49 @@
+name: Deploy to ECR
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때마다 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 코드를 체크아웃합니다.
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      # with은 plugin 파라미터 입니다. (java 17버전 셋업)
+      - name: java setup
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt' # See 'Supported distributions' for available options
+          java-version: '17'
+
+      # AWS CLI를 사용하여 ECR에 로그인합니다.
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Docker 이미지를 빌드하고 ECR에 푸시합니다.
+      - name: Build, tag, and push Docker image
+        env:
+          AWS_REGION: ap-northeast-2  # ECR 리전
+          ECR_REPOSITORY: 435944164288.dkr.ecr.ap-northeast-2.amazonaws.com/gathering-21
+        run: |
+          # 3.1 GitHub SHA를 이용하여 이미지 태그 생성
+          IMAGE_TAG=${GITHUB_SHA::7}
+
+          # 3.2 Docker 이미지를 빌드
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+
+          # 3.3 Docker 이미지를 푸시
+          docker push $ECR_REPOSITORY:$IMAGE_TAG
+
+      # 최신 태그로도 푸시하여 최신 버전을 유지합니다.
+      - name: Tag and push as 'latest'
+        env:
+          ECR_REPOSITORY: 435944164288.dkr.ecr.ap-northeast-2.amazonaws.com/gathering-21
+        run: |
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REPOSITORY:latest
+          docker push $ECR_REPOSITORY:latest
