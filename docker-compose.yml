@@ -1,5 +1,5 @@
 services:
-  app:
+  web:
     image: gathering-21-build:latest
     build:
       context: .
@@ -9,13 +9,13 @@ services:
     env_file:
       - .env.dev  # 환경 변수 파일로 모든 변수를 불러오기
     depends_on:
-      - db
+      - mysql
       - redis
     networks:
       - app-network
 
 
-  db:
+  mysql:
     image: mysql:8.0  # MySQL 버전 설정
     environment:
       MYSQL_ROOT_PASSWORD: ${DEV_DB_PASS}

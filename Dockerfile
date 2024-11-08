@@ -2,7 +2,7 @@
 FROM gradle:7.5.1-jdk17 AS build
 
 # 작업 디렉토리 설정
-WORKDIR /app
+WORKDIR /web
 
 # Gradle 캐시 활용
 COPY build.gradle settings.gradle ./
@@ -14,12 +14,13 @@ RUN gradle bootJar -x test --no-daemon
 
 # 실행 단계 - 더 작은 이미지로 빌드 결과만 복사
 FROM eclipse-temurin:17-jre
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /web/build/libs/*.jar web.jar
 
 # 포트 설정
 EXPOSE 8080
 
 # 애플리케이션 실행 명령어
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/web.jar"]
 
 ENV DEV_SERVER_PORT=8080
+
