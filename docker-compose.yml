@@ -1,5 +1,5 @@
 services:
-  web:
+  app:
     image: gathering-21-build:latest
     build:
       context: .
